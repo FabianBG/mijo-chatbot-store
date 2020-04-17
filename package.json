@@ -1,0 +1,24 @@
+{
+  "name": "mijo",
+  "version": "1.0.0",
+  "description": "Site bot manager.",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "twilio",
+    "bot",
+    "webpages",
+    "management"
+  ],
+  "author": "FabianBG",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "gatsby": "^2.20.22",
+    "gatsby-cli": "^2.11.7"
+  }
+}
