@@ -2,22 +2,6 @@ import React from 'react'
 import {Link} from 'gatsby'
 import {Segment, Container, Grid, List, Header} from 'semantic-ui-react'
 
-const twitterLink = (
-  <a href="https://twitter.com/parmsang" alt="twitter link">
-    Twitter
-  </a>
-)
-const facebookLink = (
-  <a href="https://facebook.com/" alt="facebook link">
-    Facebook
-  </a>
-)
-const emailLink = (
-  <a href="mailto:john@doe.com" alt="email link">
-    Email
-  </a>
-)
-
 const Footer = () => (
   <Segment
     vertical
@@ -33,11 +17,15 @@ const Footer = () => (
           <Grid.Column width={4}>
             <Header as="h4" content="About" />
             <List>
-              <List.Item as={Link} to="/privacy/">
-                Privacy
+              <List.Item as={Link} to="https://dev.to/search?q=twillohackaton">
+                #twillohackaton
               </List.Item>
-              <List.Item as={Link} to="/terms/">
-                Terms
+              <p>Powered by MIJO chatbot store.</p>
+              <List.Item
+                as={Link}
+                to="https://www.freepik.es/fotos-vectores-gratis/comida"
+              >
+                Icons provided for macrovector - www.freepik.es
               </List.Item>
             </List>
           </Grid.Column>
@@ -45,31 +33,47 @@ const Footer = () => (
             <Header as="h4" content="Services" />
             <List>
               <List.Item as={Link} to="/">
-                Our Products
+                Products
               </List.Item>
             </List>
           </Grid.Column>
           <Grid.Column width={7}>
-            <Header as="h4">Footer Header</Header>
+            <Header as="h4">MIJO chatbot store</Header>
             <p>
-              Extra space for a call to action inside the footer that could help
-              re-engage users.
+              A personal store generate and managed by a chatbot. Developed for
+              twilio & dev hackaton.
             </p>
+            <Header as="h4">Links</Header>
             <List horizontal style={{display: 'flex'}}>
               <List.Item
-                icon="twitter"
+                icon="github"
                 style={{display: 'flex'}}
-                content={twitterLink}
+                content={
+                  <a href="https://github.com/fabianBG" alt="github link">
+                    source code
+                  </a>
+                }
               />
               <List.Item
-                icon="facebook"
+                icon="linkedin"
                 style={{display: 'flex'}}
-                content={facebookLink}
+                content={
+                  <a
+                    href="https://www.linkedin.com/in/fabianbg"
+                    alt="linkedin profile"
+                  >
+                    linkedin
+                  </a>
+                }
               />
               <List.Item
                 icon="mail"
                 style={{display: 'flex'}}
-                content={emailLink}
+                content={
+                  <a href="mailto:f4b4g3@gmail.com" alt="email link">
+                    Email
+                  </a>
+                }
               />
             </List>
           </Grid.Column>

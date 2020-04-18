@@ -6,15 +6,14 @@ import get from 'lodash/get'
 import ProductSummary from '../components/ProductSummary'
 import ProductAttributes from '../components/ProductAttributes'
 import Layout from '../components/Layout'
+import {stringToSlug} from '../components/utils'
 
 class ProductPageTemplate extends React.PureComponent {
   render() {
     const productInfo = get(this, 'props.data.product')
-    console.log(this.props)
-
     const productImage = get(this, 'props.data.image')
     const data = productInfo.edges[0].node
-    const slug = data.slug
+    const slug = stringToSlug(data.name)
     const image = get(data, 'mainImageHref')
     const sizes = productImage.childImageSharp.sizes
     const product = {
@@ -23,8 +22,8 @@ class ProductPageTemplate extends React.PureComponent {
       image: productImage.base,
       mainImage: productImage,
       header: data.name,
-      price: `${data.currency} ${data.price}`,
-      sku: data.sku,
+      price: data.price,
+      currency: data.currency,
     }
 
     if (!sizes) return null

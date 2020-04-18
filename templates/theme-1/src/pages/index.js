@@ -1,11 +1,10 @@
 import React from 'react'
 import {graphql, useStaticQuery} from 'gatsby'
 import get from 'lodash/get'
-import {Image, Header} from 'semantic-ui-react'
 import ProductList from '../components/ProductList'
 import SEO from '../components/SEO'
-import logo from '../images/ill-short-dark.svg'
 import Layout from '../components/Layout'
+import WellcomeLogo from '../components/WellcomeLogo'
 
 const StoreIndex = ({location}) => {
   const data = useStaticQuery(graphql`
@@ -41,34 +40,29 @@ const StoreIndex = ({location}) => {
           }
         }
       }
+      image: file(base: {eq: "showroom.png"}) {
+        base
+        childImageSharp {
+          sizes(maxWidth: 600) {
+            ...GatsbyImageSharpSizes
+          }
+        }
+      }
     }
   `)
 
   const siteTitle = get(data, 'site.siteMetadata.title')
   const products = get(data, 'allProductsJson.edges')
   const images = get(data, 'allProductImgs.edges')
+  const showroom = data.image
+  console.log(showroom)
+
   const filterProductsWithoutImages = products.filter(v => v.node.image)
 
   return (
     <Layout location={location}>
       <SEO title={siteTitle} />
-      <Header
-        as="h3"
-        icon
-        textAlign="center"
-        style={{
-          marginBottom: '2em',
-        }}
-      >
-        <Header.Content
-          style={{
-            width: '60%',
-            margin: '0 auto',
-          }}
-        >
-          <Image src={logo} alt="logo" />
-        </Header.Content>
-      </Header>
+      <WellcomeLogo img={showroom} />
       <ProductList products={filterProductsWithoutImages} images={images} />
     </Layout>
   )

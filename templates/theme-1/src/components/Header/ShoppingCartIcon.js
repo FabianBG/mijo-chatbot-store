@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Icon} from 'semantic-ui-react'
 
 const ShoppingCartIcon = ({cartCount, name}) => {

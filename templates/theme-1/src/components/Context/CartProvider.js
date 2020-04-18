@@ -2,50 +2,54 @@ import React, {useState, useEffect} from 'react'
 import CartContext from './CartContext'
 
 const CartProvider = ({children}) => {
-  const [cartId, setCartId] = useState(null)
-  const [cartCount, setCartCount] = useState(0)
+  const [{products, cartCount}, setCart] = useState({
+    product: [],
+    cartCount: 0,
+  })
 
-  const addToCart = (quantity, cartId) => {
+  const cartID = 'cart'
+
+  const addToCart = (product, quantity) => {
+    const subTotal = (Number(quantity) * Number(product.price)).toFixed(2)
     const cartCountResult = Number(cartCount) + Number(quantity)
-    localStorage.setItem(
-      'mdata',
-      JSON.stringify({cartId, cartCount: cartCountResult}),
-    )
-    setCartCount(cartCountResult)
+    const productsResult = [...products, {...product, quantity, subTotal}]
+    const newCart = {
+      products: productsResult,
+      cartCount: cartCountResult,
+    }
+    localStorage.setItem(cartID, JSON.stringify(newCart))
+    setCart(newCart)
   }
 
-  const updateCartCount = (cartCount, cartId) => {
-    localStorage.setItem('mdata', JSON.stringify({cartId, cartCount}))
-    setCartCount(cartCount)
+  const updateCart = products => {
+    const newCart = {products, cartCount: products.length}
+    localStorage.setItem(cartID, JSON.stringify(newCart))
+    setCart(newCart)
   }
 
   useEffect(() => {
-    const cartId = localStorage.getItem('mcart')
-
-    const mdata = localStorage.getItem('mdata')
-
-    if ((cartId && !mdata) || !cartId) {
-      const cartId = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'.replace(/[x]/g, () =>
-        // eslint-disable-next-line no-bitwise
-        ((Math.random() * 16) | 0).toString(16),
-      )
-      localStorage.setItem('mcart', cartId)
-      localStorage.setItem('mdata', JSON.stringify({cartId, cartCount: 0}))
-      setCartId(cartId)
+    const cart = localStorage.getItem(cartID)
+    if (!cart) {
+      const empty = {
+        products: [],
+        cartCount: 0,
+      }
+      localStorage.setItem(cartID, JSON.stringify(empty))
+      setCart(empty)
     } else {
-      const data = localStorage.getItem('mdata')
+      const data = localStorage.getItem(cartID)
       const parsedData = JSON.parse(data)
-      setCartCount(parsedData.cartCount || 0)
+      setCart(parsedData)
     }
   }, [])
 
   return (
     <CartContext.Provider
       value={{
-        cartId,
+        products,
         cartCount,
         addToCart,
-        updateCartCount,
+        updateCart,
       }}
     >
       {children}

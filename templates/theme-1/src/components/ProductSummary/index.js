@@ -1,29 +1,36 @@
 import React from 'react'
 import Img from 'gatsby-image'
 
-import {Item, Label} from 'semantic-ui-react'
+import {Item, Label, Grid} from 'semantic-ui-react'
 
 import AddToCart from '../AddToCart'
 
-export default ({id, name, price, mainImage}) => (
+export default ({id, name, price, mainImage, currency}) => (
   <Item.Group>
-    <Item style={{alignItems: 'center'}}>
-      <Item.Image size="medium">
+    <Item style={{alignItems: 'center', display: 'block'}}>
+      <Item.Content style={{marginBottom: '20px'}}>
         <Img
-          style={{width: '250px'}}
+          style={{heigth: '100%'}}
           sizes={mainImage.childImageSharp.sizes}
           alt={name}
         />
-      </Item.Image>
+      </Item.Content>
       <Item.Content>
         <Item.Header>{name}</Item.Header>
-        <Item.Description>
-          <p>{price}</p>
-          <Label>{`ID: ${id}`}</Label>
-        </Item.Description>
-        <Item.Extra>
-          <AddToCart productId={id} />
-        </Item.Extra>
+        <Grid columns={2} stackable>
+          <Grid.Column>
+            <Item.Description>
+              <h3 style={{fontWeight: '400'}}>{`${currency} ${price}`}</h3>
+              <Label>{`ID: ${id}`}</Label>
+            </Item.Description>
+          </Grid.Column>
+          <Grid.Column>
+            <AddToCart
+              product={{id, name, price, mainImage, currency}}
+              style={{width: '50%'}}
+            />
+          </Grid.Column>
+        </Grid>
       </Item.Content>
     </Item>
   </Item.Group>

@@ -1,20 +1,29 @@
 /* eslint-disable camelcase */
 import React from 'react'
 import {Link} from 'gatsby'
-import {Item, Button, Loader, Message, Responsive} from 'semantic-ui-react'
+import Img from 'gatsby-image'
+import {
+  Item,
+  Button,
+  Loader,
+  Message,
+  Responsive,
+  Image,
+} from 'semantic-ui-react'
 
-export default ({items, removeFromCart, loading, completed}) => {
+export default ({products, removeFromCart, loading, completed}) => {
   if (loading) return <Loader active inline="centered" />
 
   if (completed)
     return (
-      <Message success>
-        <Message.Header>Your placed!</Message.Header>
-        <p>Congratulations. Your order and payment has been accepted.</p>
-      </Message>
+      <Message
+        success
+        header="Hurray !!"
+        content="The order was placed the owner will contact you soon."
+      />
     )
 
-  if (items.length === 0)
+  if (products.length === 0)
     return (
       <Message warning>
         <Message.Header>Your cart is empty</Message.Header>
@@ -24,32 +33,23 @@ export default ({items, removeFromCart, loading, completed}) => {
       </Message>
     )
   const mapCartItemsToItems = items =>
-    items.map(({id, product_id, name, quantity, meta, image}) => {
-      const price = meta.display_price.with_tax.unit.formatted || ''
-      const imageUrl = image.href || '/static/moltin-light-hex.svg'
-
+    items.map(({id, name, quantity, price, mainImage, image}, index) => {
       const DesktopItemImage = () => (
-        <Item.Image
-          src={imageUrl}
-          alt={name}
-          size="small"
-          style={{background: '#f2f2f2'}}
-        />
+        <Image style={{width: '30%'}}>
+          <Img sizes={mainImage.childImageSharp.sizes} alt={name} />
+        </Image>
       )
       const MobileItemImage = () => (
-        <Item.Image
-          src={imageUrl}
-          alt={name}
-          size="small"
-          style={{background: 'none'}}
-        />
+        <Image style={{width: '30%'}}>
+          <Img sizes={mainImage.childImageSharp.sizes} alt={name} />
+        </Image>
       )
 
       return {
-        childKey: id,
+        childKey: index,
         header: (
           <Item.Header>
-            <Link to={`/product/${product_id}/`}>{name}</Link>
+            <Link to={`/product/${id}/`}>{name}</Link>
           </Item.Header>
         ),
         image: (
@@ -61,17 +61,16 @@ export default ({items, removeFromCart, loading, completed}) => {
             />
           </React.Fragment>
         ),
-        meta: `${quantity}x ${price}`,
-        description: 'Some more information goes here....',
+        meta: `${quantity} x ${price}`,
         extra: (
           <Button
             basic
             icon="remove"
             floated="right"
-            onClick={() => removeFromCart(id)}
+            onClick={() => removeFromCart(index)}
           />
         ),
       }
     })
-  return <Item.Group divided items={mapCartItemsToItems(items)} />
+  return <Item.Group divided items={mapCartItemsToItems(products)} />
 }

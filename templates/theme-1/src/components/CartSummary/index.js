@@ -1,21 +1,15 @@
 import React from 'react'
 import {Button, Segment, Divider} from 'semantic-ui-react'
 
-export default ({
-  handleCheckout,
-  display_price: {
-    with_tax: {amount, currency, formatted},
-  },
-}) => (
+export default ({handleCheckout, subtotal}) => (
   <div>
     <Divider />
     <Segment clearing size="large">
-      <span>
-        <strong>Sub total:</strong>
-        {` ${formatted}`}
-      </span>
-
-      <Button color="black" floated="right">
+      <h3 style={{float: 'left', fontWeight: '300', marginTop: '10px'}}>
+        <strong>Total*:</strong>
+        {` ${subtotal}`}
+      </h3>
+      <Button color="green" floated="right" onClick={handleCheckout}>
         Check out
       </Button>
     </Segment>

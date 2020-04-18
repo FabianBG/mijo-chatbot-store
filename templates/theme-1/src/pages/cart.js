@@ -1,95 +1,94 @@
 /* eslint-disable camelcase */
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext} from 'react'
+import {Modal, Message} from 'semantic-ui-react'
 import SEO from '../components/SEO'
 import CartItemList from '../components/CartItemList'
 import CartSummary from '../components/CartSummary'
 import CartContext from '../components/Context/CartContext'
 import Layout from '../components/Layout'
+import CustomerInfo from '../components/CustomerInfo'
+import sendOrderToAPI from '../lib/api'
 
 const Cart = ({location}) => {
-  const [loading, setLoading] = useState(true)
-  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [checkoutModal, setCheckoutModal] = useState(false)
   const [completed, setCompleted] = useState(false)
-  const [meta, setMeta] = useState({})
-  const [cartId, setCartId] = useState({})
-  const {updateCartCount} = useContext(CartContext)
+  const [failed, setFailed] = useState(false)
+  const {products, updateCart} = useContext(CartContext)
 
-  async function getCartItems() {
-    /*const cartIdLocal = await localStorage.getItem('mcart')
-    await Moltin.getCartItems(cartIdLocal).then(({data, meta}) => {
-      setItems(data)
-      setCartId(cartIdLocal)
-      setMeta(meta)
-      setLoading(false)
-    })*/
+  const handleCheckout = () => {
+    setCheckoutModal(true)
   }
 
-  useEffect(() => {
-    getCartItems()
-  }, [])
+  const handleRemoveFromCart = index => {
+    updateCart([...products.splice(index, 0)])
+  }
 
-  const handleCheckout = async data => {
-    const cartId = await localStorage.getItem('mcart')
-    const customerId = localStorage.getItem('mcustomer')
-
-    const {
-      id: token,
-      email,
-      card: {
-        name,
-        address_line1: line_1,
-        address_city: city,
-        address_country: country,
-        address_state: county,
-        address_zip: postcode,
-      },
-    } = data
-
-    const customer = customerId || {name, email}
-
-    const address = {
-      first_name: name.split(' ')[0],
-      last_name: name.split(' ')[1] || '',
-      line_1,
-      city,
-      county: county || '',
-      country,
-      postcode,
+  const handlePlaceOrder = async formData => {
+    setLoading(true)
+    const order = {
+      ...formData,
+      products: products.map(
+        ({id, name, quantity, price, currency, subTotal}) => ({
+          id,
+          name,
+          quantity,
+          price,
+          currency,
+          subTotal,
+        }),
+      ),
     }
-
     try {
-      const {
-        data: {id},
-      } = await Moltin.checkoutCart(cartId, customer, address)
-      await Moltin.payForOrder(id, token, email)
-      setCompleted(true)
-      updateCartCount(0, cartId)
+      await sendOrderToAPI({...order})
+        .then(res => res.json())
+        .then(() => {
+          setCompleted(true)
+          setFailed(false)
+          updateCart([], 0)
+        })
     } catch (e) {
       console.log(e)
+      setFailed(true)
+    } finally {
+      setCheckoutModal(false)
+      setLoading(false)
     }
   }
 
-  const handleRemoveFromCart = itemId => {
-    Moltin.removeFromCart(itemId, cartId).then(({data, meta}) => {
-      const total = data.reduce((a, c) => a + c.quantity, 0)
-      updateCartCount(total, cartId)
-      setItems(data)
-      setMeta(meta)
-    })
+  const handleOrderStatus = () => {
+    if (failed) {
+      return <Message error header="Sorry" content="Something went wrong." />
+    }
+    return <></>
   }
 
-  const rest = {completed, items, loading, cartId}
+  const subTotal = products.reduce((acc, p) => (acc += Number(p.subTotal)), 0)
+  const currency = products.length > 0 ? products[0].currency : ''
+
+  const rest = {completed, products, loading}
 
   return (
     <Layout location={location}>
       <SEO title="Cart" />
       <CartItemList
         {...rest}
-        removeFromCart={item => handleRemoveFromCart(item)}
+        removeFromCart={index => handleRemoveFromCart(index)}
       />
       {!loading && !completed && (
-        <CartSummary {...meta} handleCheckout={handleCheckout} />
+        <CartSummary
+          subtotal={`${currency} ${subTotal}`}
+          handleCheckout={handleCheckout}
+        />
       )}
+
+      {handleOrderStatus()}
+
+      <Modal open={checkoutModal} dimmer="blurring">
+        <Modal.Content>
+          <CustomerInfo onSubmit={handlePlaceOrder} />
+        </Modal.Content>
+      </Modal>
     </Layout>
   )
 }

@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react'
 import {Input, Icon, Transition} from 'semantic-ui-react'
 import CartContext from '../Context/CartContext'
 
-const AddToCart = ({productId}) => {
+const AddToCart = ({product, style}) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [quantity, setQuantity] = useState(1)
@@ -10,9 +10,11 @@ const AddToCart = ({productId}) => {
   const {addToCart} = useContext(CartContext)
 
   const toggleMessage = () => {
+    setVisible(true)
+    setLoading(false)
     setTimeout(() => {
       setVisible(false)
-    }, 1000)
+    }, 3000)
   }
 
   const validate = quantity => {
@@ -20,38 +22,29 @@ const AddToCart = ({productId}) => {
     const re = /^[0-9\b]+$/
 
     if (!quantity) error = "Can't be blank"
-    if (!re.test(quantity)) error = 'Please enter an integer for the quantity'
+    if (!re.test(quantity)) error = 'Please enter a number for the quantity'
+    if (quantity === '0') error = "Quantity can't be 0"
 
     return error
   }
 
   const handleSubmit = async () => {
-    const cartId = await localStorage.getItem('mcart')
-
     const error = validate(quantity)
     setError(error)
     if (!error) {
       setLoading(true)
-      /*Moltin.addToCart(cartId, productId, quantity)
-        .then(() => {
-          addToCart(quantity, cartId)
-          setLoading(false)
-          setQuantity(quantity)
-          setVisible(true)
-          toggleMessage()
-        })
-        .catch(err => {
-          setError(`Error: ${err.errors[0].detail}` || 'Something went wrong')
-          setLoading(false)
-        })*/
+      setQuantity(quantity)
+      addToCart(product, quantity)
+      toggleMessage()
     }
   }
 
   const handleChange = ({target: {value}}) => setQuantity(value)
 
   return (
-    <>
+    <div>
       <Input
+        style={style}
         type="number"
         placeholder="Quantity"
         value={quantity}
@@ -75,7 +68,7 @@ const AddToCart = ({productId}) => {
           Added to cart
         </div>
       </Transition>
-    </>
+    </div>
   )
 }
 
