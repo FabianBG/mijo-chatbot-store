@@ -1,0 +1,4 @@
+cp -r templates/$1 sites/$2
+echo $3 > sites/$2/site-name
+mkdir public/$3
+sed -i "s/path_prefix_replace/$3/g" sites/$2/gatsby-config.js

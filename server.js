@@ -1,6 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-const { exec } = require("child_process");
+const apiRoutes = require("./api");
 
 var app = express();
 
@@ -15,41 +15,8 @@ app.use(bodyParser.json());
 // Configure static folder of sites
 app.use(express.static("public"));
 
-app.post("/create-site", function (req, res) {
-  console.log(req.body);
-  exec(
-    `cp -r templates/theme-1 sites/${req.body.id}`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
-      res.send({ ok: true });
-    }
-  );
-});
-
-app.post("/deploy", function (req, res) {
-  exec(
-    `cd sites/${req.body.id}; npx gatsby build --prefix-paths; cp public/* ../../public/${req.body.id}/`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
-      res.send({ ok: true });
-    }
-  );
-});
-
-app.post("/mijo/store/order", function (req, res) {
-  console.log(req);
-  res.send({ ok: true });
-});
+// Configure api routes
+app.use("/mijo/_api", apiRoutes);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {

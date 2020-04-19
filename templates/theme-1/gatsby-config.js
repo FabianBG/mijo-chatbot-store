@@ -7,9 +7,9 @@ module.exports = {
     title: 'MIJO chatbot store website',
     author: 'MIJO chatbot',
     description: 'MIJO chatbot store website',
-    siteUrl: 'http://mijo.store',
+    siteUrl: 'http://mijo.store/path_prefix_replace',
   },
-  pathPrefix: '/',
+  pathPrefix: 'path_prefix_replace',
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,

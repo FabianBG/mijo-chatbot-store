@@ -1,4 +1,4 @@
-import env from '../../../api'
+import env from '../../../../sites-config'
 
 export default function sendOrderToAPI(order) {
   const request = {
