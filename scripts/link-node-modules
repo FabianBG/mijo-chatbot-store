@@ -1,4 +1,0 @@
-# create simlink to the main node modules, it has to be executed on the same dir of node_modules
-# Ex link-node-modules [detination]
-
-ln -s ./node_modules $1
