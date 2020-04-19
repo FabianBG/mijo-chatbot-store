@@ -7,9 +7,9 @@ module.exports = {
     title: 'MIJO chatbot store website',
     author: 'MIJO chatbot',
     description: 'MIJO chatbot store website',
-    siteUrl: '$siteUrl',
+    siteUrl: 'http://mijo.store',
   },
-  pathPrefix: '/gatsby-starter-ecommerce',
+  pathPrefix: '/',
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,
@@ -27,12 +27,6 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        // trackingId: `ADD YOUR TRACKING ID HERE`,
-      },
-    },
     {
       resolve: `gatsby-plugin-nprogress`,
       options: {

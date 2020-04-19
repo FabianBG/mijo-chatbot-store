@@ -3,7 +3,7 @@ import CartContext from './CartContext'
 
 const CartProvider = ({children}) => {
   const [{products, cartCount}, setCart] = useState({
-    product: [],
+    products: [],
     cartCount: 0,
   })
 

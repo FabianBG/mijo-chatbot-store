@@ -55,7 +55,6 @@ const StoreIndex = ({location}) => {
   const products = get(data, 'allProductsJson.edges')
   const images = get(data, 'allProductImgs.edges')
   const showroom = data.image
-  console.log(showroom)
 
   const filterProductsWithoutImages = products.filter(v => v.node.image)
 

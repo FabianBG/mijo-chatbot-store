@@ -8,7 +8,6 @@ export default function sendOrderToAPI(order) {
     method: 'POST',
     body: JSON.stringify(order),
   }
-  console.log(env, request)
 
   return fetch(env.API_PLACE_ORDER_URL || '/', request)
 }
