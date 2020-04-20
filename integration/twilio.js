@@ -14,8 +14,9 @@ const sendMessage = (body, to, chanel = "whatsapp") => {
 };
 
 const handleTwilioMessageRequest = (request) => {
-  const data = request.twilio.collected_data;
-
+  const memory = JSON.parse(request.Memory);
+  const data = memory.twilio.collected_data;
+  const [chanel, phone] = request.UserIdentifier.split(":");
   let body = {};
   for (const collector of Object.keys(data)) {
     const answers = data[collector].answers;
@@ -24,8 +25,9 @@ const handleTwilioMessageRequest = (request) => {
     }
   }
   return {
-    from: data.From,
-    body,
+    ...body,
+    chanel,
+    phone,
   };
 };
 

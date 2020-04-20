@@ -5,6 +5,7 @@ const fs = require("fs");
 const createSite = (id, phone, theme) => {
   const siteName = slugify(id.toLowerCase());
   return new Promise((resolve, reject) => {
+    console.log(`${new Date()} [INFO] create site ${phone}`);
     exec(
       `./scripts/create-site ${theme || "theme-1"} ${phone} ${siteName}`,
       (error, stdout, stderr) => {
@@ -15,6 +16,13 @@ const createSite = (id, phone, theme) => {
         resolve({ siteName });
       }
     );
+  });
+};
+
+const hasSiteCreated = (phone) => {
+  const dataFolder = `sites/${phone}`;
+  return new Promise((resolve, reject) => {
+    resolve(fs.existsSync(dataFolder));
   });
 };
 
@@ -91,6 +99,7 @@ const processOrder = (order) => {
 
 module.exports = {
   createSite,
+  hasSiteCreated,
   buildSite,
   addProduct,
   deleteProduct,
