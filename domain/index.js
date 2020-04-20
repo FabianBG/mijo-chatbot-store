@@ -26,8 +26,20 @@ const hasSiteCreated = (phone) => {
   });
 };
 
+const getSiteName = (phone) => {
+  const dataFolder = `sites/${phone}/site-name`;
+  return fs.readFileSync(dataFolder, "utf8");
+};
+
+const getSiteProducts = (phone) => {
+  const dataFolder = `sites/${phone}/src/data/products`;
+  return fs.readdirSync(dataFolder).map((item) => {
+    return item.split(".")[1];
+  });
+};
+
 const buildSite = (id, phone) => {
-  console.log(`${new Date()} [INFO] BUILD INIT SITE-ID=${id}`);
+  console.log(`${new Date()} [INFO] BUILD INIT SITE=${id}`);
   return new Promise((resolve, reject) => {
     exec(`./scripts/build-site-cache ${phone}`, (error, stdout, stderr) => {
       if (error) {
@@ -40,7 +52,7 @@ const buildSite = (id, phone) => {
   });
 };
 
-const addProduct = (name, phone, price) => {
+const addProduct = (name, phone, price, image) => {
   const productSlug = slugify(name.toLowerCase());
   const dataFolder = `sites/${phone}/src/data/products`;
 
@@ -55,7 +67,7 @@ const addProduct = (name, phone, price) => {
         }
       }
       // TODO: manage images from chatbot
-      const image = "default.png";
+      const imageName = image || "default.png";
       const content = `
       {
         "id": "MJPR-${nextID}",
@@ -63,7 +75,7 @@ const addProduct = (name, phone, price) => {
         "price": "${price}",
         "description": "",
         "currency": "$",
-        "image": "${image}"
+        "image": "${imageName}"
       }
       `;
       fs.writeFileSync(
@@ -100,6 +112,8 @@ const processOrder = (order) => {
 module.exports = {
   createSite,
   hasSiteCreated,
+  getSiteName,
+  getSiteProducts,
   buildSite,
   addProduct,
   deleteProduct,

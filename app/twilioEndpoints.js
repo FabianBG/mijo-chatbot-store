@@ -4,6 +4,7 @@ const slugify = require("slugify");
 const validateBody = require("./bodyValidator");
 const fs = require("fs");
 const twilio = require("../integration/twilio");
+const fileDownloader = require("./fileDownloader");
 const domain = require("../domain");
 
 var router = express.Router();
@@ -31,21 +32,39 @@ router.post("/store/create-site", async function(req, res) {
     res.status(200).send(response);
   } catch (error) {
     console.error(error);
+    twilio.sendMessage(
+      "Something wnet wrong, try again in a few minutes. :(",
+      phone
+    );
     res.status(500).send(error);
   }
 });
 
 router.post("/store/build-site", async function(req, res) {
   const data = twilio.handleTwilioMessageRequest(req.body);
-  const { phone } = data;
+  const { phone, confirm } = data;
+  twilio.sendMessage(
+    `The site is updating it gonna take a few minutes.`,
+    phone
+  );
   try {
-    const response = await domain.buildSite(phone, phone);
-    twilio.sendMessage("The site is ready and updated :D", phone);
-    res.status(200).send(response);
+    const products = domain.getSiteProducts(phone);
+    if (products.length === 0) {
+      twilio.sendMessage(
+        `The site has no products :O please add some. Just text me to add a product.`,
+        phone
+      );
+      res.status(200).send({});
+    } else {
+      const response = await domain.buildSite(phone, phone);
+      const site = `${process.env.APP_URL}/${domain.getSiteName(phone)}`;
+      twilio.sendMessage(`The site is ready and updated :D. ${site}`, phone);
+      res.status(200).send(response);
+    }
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong :(, try again in a few minutes.",
+      "Something wnet wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);
@@ -54,9 +73,16 @@ router.post("/store/build-site", async function(req, res) {
 
 router.post("/store/add-product", async function(req, res) {
   const data = twilio.handleTwilioMessageRequest(req.body);
-  const { name, phone, price } = data;
+  const { name, phone, price, image } = data;
+  const imageName = `${new Date().getTime()}.${image.type.split("/")[1]}`;
+  twilio.sendMessage(`Creating the product on your site.`, phone);
+  await fileDownloader(
+    image.url,
+    `sites/${phone}/src/images/product-images/${imageName}`
+  );
+
   try {
-    const response = await domain.addProduct(name, phone, price);
+    const response = await domain.addProduct(name, phone, price, imageName);
     twilio.sendMessage(
       "The product is created, send a message with *MIJO publish it* to publish it.",
       phone
@@ -65,7 +91,7 @@ router.post("/store/add-product", async function(req, res) {
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong :(, try again in a few minutes.",
+      "Something wnet wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);
@@ -89,7 +115,7 @@ router.post("/store/delete-product", async function(req, res) {
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong :(, try again in a few minutes.",
+      "Something wnet wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);

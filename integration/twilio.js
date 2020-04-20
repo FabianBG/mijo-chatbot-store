@@ -21,7 +21,11 @@ const handleTwilioMessageRequest = (request) => {
   for (const collector of Object.keys(data)) {
     const answers = data[collector].answers;
     for (const field of Object.keys(answers)) {
-      body[field] = answers[field].answer;
+      if (answers[field].media) {
+        body[field] = answers[field].media;
+      } else {
+        body[field] = answers[field].answer;
+      }
     }
   }
   return {
