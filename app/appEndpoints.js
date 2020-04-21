@@ -4,8 +4,13 @@ const slugify = require("slugify");
 const validateBody = require("./bodyValidator");
 const twilio = require("../integration/twilio");
 const fs = require("fs");
+const domain = require("../domain");
 
 var router = express.Router();
+
+router.get("/store/list", function(req, res) {
+  res.status(200).send(domain.getSites());
+});
 
 router.post("/store/place-order", function(req, res) {
   console.log(req.body);

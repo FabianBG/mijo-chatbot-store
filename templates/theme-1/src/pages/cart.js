@@ -12,7 +12,7 @@ import sendOrderToAPI from '../lib/api'
 
 const Cart = ({location}) => {
   const {site} = useStaticQuery(graphql`
-    query IndexQuery {
+    query CartQuery {
       site {
         siteMetadata {
           siteName

@@ -152,10 +152,10 @@ router.post("/store/list-delete-product", async function(req, res) {
 router.post("/store/delete-product", async function(req, res) {
   const data = twilio.handleTwilioMessageFieldRequest(req.body, ["id"]);
   const { id, phone } = data;
-  twilio.sendMessage("Ok looking for the product to delete", phone);
-  if (!parseInt(id)) {
+  if (isNaN(parseInt(id))) {
     return twilio.sendMessage("Not deleting anything", phone);
   }
+  twilio.sendMessage("Ok looking for the product to delete", phone);
   try {
     const response = await domain.deleteProduct(id, phone);
     twilio.sendMessage(

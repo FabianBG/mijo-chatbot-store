@@ -30,6 +30,10 @@ fs.writeFileSync(
 `
 );
 
+app.get("/", (req, res) => {
+  return res.sendFile(__dirname + "/templates/index.html");
+});
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {
   console.log("Your app is listening on port " + listener.address().port);

@@ -2,6 +2,11 @@ const { exec } = require("child_process");
 const slugify = require("slugify");
 const fs = require("fs");
 
+const getSites = () => {
+  const dataFolder = `public`;
+  return fs.readdirSync(dataFolder);
+};
+
 const createSite = (id, phone, theme) => {
   const siteName = slugify(id.toLowerCase());
   return new Promise((resolve, reject) => {
@@ -118,4 +123,5 @@ module.exports = {
   addProduct,
   deleteProduct,
   processOrder,
+  getSites,
 };

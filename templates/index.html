@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=2, user-scalable=no"
+    />
+    <meta name="description" content="Chatbot store generator" />
+    <meta name="keywords" content="store chatbot mijo" />
+    <meta name="author" content="MIJO" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>MIJO chatbot store website</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+      type="text/css"
+    />
+    <style type="text/css">
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-font-smoothing: grayscale;
+      }
+
+      .hidden.menu {
+        display: none;
+      }
+
+      .masthead.segment {
+        min-height: 600px;
+        padding: 1em 0em;
+      }
+
+      .masthead .logo.item img {
+        margin-right: 1em;
+      }
+
+      .masthead .ui.menu .ui.button {
+        margin-left: 0.5em;
+      }
+
+      .masthead h1.ui.header {
+        margin-top: 2em;
+        margin-bottom: 0em;
+        font-size: 4em;
+        font-weight: normal;
+      }
+
+      .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+      }
+
+      .ui.vertical.stripe {
+        padding: 8em 0em;
+      }
+
+      .ui.vertical.stripe h3 {
+        font-size: 2em;
+      }
+
+      .ui.vertical.stripe .button + h3,
+      .ui.vertical.stripe p + h3 {
+        margin-top: 3em;
+      }
+
+      .ui.vertical.stripe .floated.image {
+        clear: both;
+      }
+
+      .ui.vertical.stripe p {
+        font-size: 1.33em;
+      }
+
+      .ui.vertical.stripe .horizontal.divider {
+        margin: 3em 0em;
+      }
+
+      .quote.stripe.segment {
+        padding: 0em;
+      }
+
+      .quote.stripe.segment .grid .column {
+        padding-top: 5em;
+        padding-bottom: 5em;
+      }
+
+      .footer.segment {
+        padding: 5em 0em;
+      }
+
+      .secondary.pointing.menu .toc.item {
+        display: none;
+      }
+
+      @media only screen and (max-width: 700px) {
+        .ui.fixed.menu {
+          display: none !important;
+        }
+
+        .secondary.pointing.menu .item,
+        .secondary.pointing.menu .menu {
+          display: none;
+        }
+
+        .secondary.pointing.menu .toc.item {
+          display: block;
+        }
+
+        .masthead.segment {
+          min-height: 350px;
+        }
+
+        .masthead h1.ui.header {
+          font-size: 2em;
+          margin-top: 1.5em;
+        }
+
+        .masthead h2 {
+          margin-top: 0.5em;
+          font-size: 1.5em;
+        }
+      }
+    </style>
+  </head>
+
+  <body id="root">
+    <div class="ui large top fixed hidden menu">
+      <div class="ui container">
+        <a class="active item">Home</a>
+      </div>
+    </div>
+    <!--Sidebar Menu-->
+    <div class="ui vertical inverted sidebar menu">
+      <a class="active item">Home</a>
+    </div>
+    <!--Page Contents-->
+    <div class="pusher">
+      <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+          <div class="ui large secondary inverted pointing menu">
+            <a class="toc item"><i class="sidebar icon"></i></a>
+            <a class="active item">Home</a>
+          </div>
+        </div>
+        <div class="ui text container">
+          <h1 class="ui inverted header">MIJO</h1>
+          <h2>
+            Chatbot Store Website
+          </h2>
+          <div class="ui right labeled left icon input">
+            <i class="tags icon"></i>
+            <input
+              id="search"
+              type="text"
+              placeholder="Looking for a something to buy something."
+              onChange="search()"
+            />
+            <a class="ui tag label">
+              SEARCH
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="ui vertical" style="margin-top: 30px;">
+        <h3 class="ui header" style="text-align: center;">- Actual sites -</h3>
+        <div id="stores"></div>
+      </div>
+      <div class="ui vertical segment">
+        <div
+          class="ui vertical segment"
+          style="padding: 4em 0em; margin-top: 3em; border-top: 1px solid rgb(242, 242, 242);"
+        >
+          <div class="ui text container">
+            <div class="ui stackable grid">
+              <div class="row">
+                <div class="four wide column">
+                  <h4 class="ui header">About</h4>
+                  <div role="list" class="ui list">
+                    <a
+                      role="listitem"
+                      class="item"
+                      href="/fab-store/https:/dev.to/search?q=twillohackaton"
+                      >#twillohackaton</a
+                    >
+                    <p>Powered by MIJO chatbot store.</p>
+                    <a
+                      role="listitem"
+                      class="item"
+                      href="/fab-store/https:/www.freepik.es/fotos-vectores-gratis/comida"
+                      >Icons provided for macrovector - www.freepik.es</a
+                    >
+                  </div>
+                </div>
+                <div class="seven wide column">
+                  <h4 class="ui header">MIJO chatbot store</h4>
+                  <p>
+                    A personal store generate and managed by a chatbot.
+                    Developed for twilio &amp; dev hackaton.
+                  </p>
+                  <h4 class="ui header">Links</h4>
+                  <div
+                    role="list"
+                    class="ui horizontal list"
+                    style="display: flex;"
+                  >
+                    <div role="listitem" class="item" style="display: flex;">
+                      <i aria-hidden="true" class="github icon"></i>
+                      <div class="content">
+                        <a href="https://github.com/fabianBG" alt="github link"
+                          >source code</a
+                        >
+                      </div>
+                    </div>
+                    <div role="listitem" class="item" style="display: flex;">
+                      <i aria-hidden="true" class="linkedin icon"></i>
+                      <div class="content">
+                        <a
+                          href="https://www.linkedin.com/in/fabianbg"
+                          alt="linkedin profile"
+                          >linkedin</a
+                        >
+                      </div>
+                    </div>
+                    <div role="listitem" class="item" style="display: flex;">
+                      <i aria-hidden="true" class="mail icon"></i>
+                      <div class="content">
+                        <a href="mailto:f4b4g3@gmail.com" alt="email link"
+                          >Email</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    <script>
+      function search() {
+        $.get("/mijo/_api/store/list").then((res) => {
+          drawList(
+            res.filter((i) => new RegExp(`.*${$("#search").val()}.*`).test(i))
+          );
+        });
+        console.log($("#search"));
+      }
+
+      function drawList(res) {
+        const list = res.map(
+          (i) => `
+                    <div class="item">
+                <i class="shopping bag icon"></i>
+                <div class="content">
+                <div class="header"><a href="/${i}">${i}</a></div>
+                </div>
+            </div>`
+        );
+        $("#stores").html(
+          `<div class="ui large horizontal divided list"
+                style="text-align: center;display: flex;align-items: center;justify-content: center;">${list}</div>`
+        );
+      }
+      $(document).ready(function() {
+        // fix menu when passed
+        $(".masthead").visibility({
+          once: false,
+          onBottomPassed: function() {
+            $(".fixed.menu").transition("fade in");
+          },
+          onBottomPassedReverse: function() {
+            $(".fixed.menu").transition("fade out");
+          },
+        });
+
+        // create sidebar and attach to menu open
+        $(".ui.sidebar").sidebar("attach events", ".toc.item");
+        $.get("/mijo/_api/store/list").then((res) => drawList(res));
+      });
+    </script>
+  </body>
+</html>
