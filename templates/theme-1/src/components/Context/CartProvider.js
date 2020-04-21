@@ -1,13 +1,23 @@
 import React, {useState, useEffect} from 'react'
+import {useStaticQuery, graphql} from 'gatsby'
 import CartContext from './CartContext'
 
 const CartProvider = ({children}) => {
+  const {site} = useStaticQuery(graphql`
+    query CartProviderQuery {
+      site {
+        siteMetadata {
+          siteName
+        }
+      }
+    }
+  `)
   const [{products, cartCount}, setCart] = useState({
     products: [],
     cartCount: 0,
   })
 
-  const cartID = 'cart'
+  const cartID = `cart-of-${site.siteMetadata.siteName}`
 
   const addToCart = (product, quantity) => {
     const subTotal = (Number(quantity) * Number(product.price)).toFixed(2)

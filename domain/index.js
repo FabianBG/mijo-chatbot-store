@@ -34,7 +34,7 @@ const getSiteName = (phone) => {
 const getSiteProducts = (phone) => {
   const dataFolder = `sites/${phone}/src/data/products`;
   return fs.readdirSync(dataFolder).map((item) => {
-    return item.split(".")[1];
+    return `${item.split(".")[0]}-${item.split(".")[1]}`;
   });
 };
 

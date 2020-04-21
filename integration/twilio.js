@@ -18,13 +18,15 @@ const handleTwilioMessageRequest = (request) => {
   const data = memory.twilio.collected_data;
   const [chanel, phone] = request.UserIdentifier.split(":");
   let body = {};
-  for (const collector of Object.keys(data)) {
-    const answers = data[collector].answers;
-    for (const field of Object.keys(answers)) {
-      if (answers[field].media) {
-        body[field] = answers[field].media;
-      } else {
-        body[field] = answers[field].answer;
+  if (memory && data) {
+    for (const collector of Object.keys(data)) {
+      const answers = data[collector].answers;
+      for (const field of Object.keys(answers)) {
+        if (answers[field].media) {
+          body[field] = answers[field].media;
+        } else {
+          body[field] = answers[field].answer;
+        }
       }
     }
   }
@@ -35,4 +37,24 @@ const handleTwilioMessageRequest = (request) => {
   };
 };
 
-module.exports = { sendMessage, handleTwilioMessageRequest };
+const handleTwilioMessageFieldRequest = (request, fields) => {
+  const [chanel, phone] = request.UserIdentifier.split(":");
+  let body = {};
+  for (const field of fields) {
+    const value = request[`Field_${field}_Value`];
+    if (value) {
+      body[field] = value;
+    }
+  }
+  return {
+    ...body,
+    chanel,
+    phone,
+  };
+};
+
+module.exports = {
+  sendMessage,
+  handleTwilioMessageRequest,
+  handleTwilioMessageFieldRequest,
+};

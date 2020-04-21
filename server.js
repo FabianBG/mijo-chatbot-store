@@ -1,5 +1,6 @@
 var express = require("express");
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
+const fs = require("fs");
 const appRoutes = require("./app/appEndpoints");
 const twilioRoutes = require("./app/twilioEndpoints");
 
@@ -19,6 +20,15 @@ app.use(express.static("public"));
 // Configure api routes
 app.use("/mijo/_api", appRoutes);
 app.use("/mijo/twilio", twilioRoutes);
+
+// Generate url to gatsby sites
+fs.writeFileSync(
+  "./sites-config.js",
+  `export default {
+  API_PLACE_ORDER_URL: "${process.env.APP_URL}${process.env.APP_PLACE_ORDER_ENDPOINT}",
+};
+`
+);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {

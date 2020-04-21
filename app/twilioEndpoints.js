@@ -33,7 +33,7 @@ router.post("/store/create-site", async function(req, res) {
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong, try again in a few minutes. :(",
+      "Something went wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);
@@ -43,6 +43,9 @@ router.post("/store/create-site", async function(req, res) {
 router.post("/store/build-site", async function(req, res) {
   const data = twilio.handleTwilioMessageRequest(req.body);
   const { phone, confirm } = data;
+  if (confirm === "No") {
+    return twilio.sendMessage(`Ok not updated.`, phone);
+  }
   twilio.sendMessage(
     `The site is updating it gonna take a few minutes.`,
     phone
@@ -64,7 +67,7 @@ router.post("/store/build-site", async function(req, res) {
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong, try again in a few minutes. :(",
+      "Something went wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);
@@ -91,7 +94,55 @@ router.post("/store/add-product", async function(req, res) {
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong, try again in a few minutes. :(",
+      "Something went wrong, try again in a few minutes. :(",
+      phone
+    );
+    res.status(500).send(error);
+  }
+});
+
+router.post("/store/list-product", async function(req, res) {
+  const data = twilio.handleTwilioMessageRequest(req.body);
+  const { phone } = data;
+  try {
+    const response = await domain.getSiteProducts(phone);
+    const list = response.map((i) => i.replace("_", " ")).join(`
+    `);
+    twilio.sendMessage(
+      `Your store has:
+    ${list}`,
+      phone
+    );
+    res.status(200).send(response);
+  } catch (error) {
+    console.error(error);
+    twilio.sendMessage(
+      "Something went wrong, try again in a few minutes. :(",
+      phone
+    );
+    res.status(500).send(error);
+  }
+});
+
+router.post("/store/list-delete-product", async function(req, res) {
+  const data = twilio.handleTwilioMessageRequest(req.body);
+  const { phone } = data;
+  try {
+    const response = await domain.getSiteProducts(phone);
+    const list = response.map((i) => i.replace("_", " ")).join(`
+    `);
+    twilio.sendMessage(
+      `Your store has:
+    ${list}
+    
+    Say *delete and the number* if you are sure`,
+      phone
+    );
+    res.status(200).send(response);
+  } catch (error) {
+    console.error(error);
+    twilio.sendMessage(
+      "Something went wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);
@@ -99,23 +150,23 @@ router.post("/store/add-product", async function(req, res) {
 });
 
 router.post("/store/delete-product", async function(req, res) {
-  const errors = validateBody(req.body, {
-    phone: (value) => (!value ? "phone is required" : false),
-    id: (value) => (!value ? "id is required" : false),
-  });
-
-  if (Object.keys(errors).length > 0) {
-    res.status(500).send(errors);
+  const data = twilio.handleTwilioMessageFieldRequest(req.body, ["id"]);
+  const { id, phone } = data;
+  twilio.sendMessage("Ok looking for the product to delete", phone);
+  if (!parseInt(id)) {
+    return twilio.sendMessage("Not deleting anything", phone);
   }
-
-  const { id, phone } = req.body;
   try {
     const response = await domain.deleteProduct(id, phone);
+    twilio.sendMessage(
+      "The product is deleted, send a message with *MIJO publish it* to update your site it.",
+      phone
+    );
     res.status(200).send(response);
   } catch (error) {
     console.error(error);
     twilio.sendMessage(
-      "Something wnet wrong, try again in a few minutes. :(",
+      "Something went wrong, try again in a few minutes. :(",
       phone
     );
     res.status(500).send(error);

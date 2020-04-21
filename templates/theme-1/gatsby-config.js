@@ -8,6 +8,7 @@ module.exports = {
     author: 'MIJO chatbot',
     description: 'MIJO chatbot store website',
     siteUrl: 'http://mijo.store/path_prefix_replace',
+    siteName: 'path_prefix_replace',
   },
   pathPrefix: 'path_prefix_replace',
   plugins: [

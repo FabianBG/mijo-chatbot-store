@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, {useState, useContext} from 'react'
 import {Modal, Message} from 'semantic-ui-react'
+import {useStaticQuery, graphql} from 'gatsby'
 import SEO from '../components/SEO'
 import CartItemList from '../components/CartItemList'
 import CartSummary from '../components/CartSummary'
@@ -10,6 +11,15 @@ import CustomerInfo from '../components/CustomerInfo'
 import sendOrderToAPI from '../lib/api'
 
 const Cart = ({location}) => {
+  const {site} = useStaticQuery(graphql`
+    query IndexQuery {
+      site {
+        siteMetadata {
+          siteName
+        }
+      }
+    }
+  `)
   const [loading, setLoading] = useState(false)
   const [checkoutModal, setCheckoutModal] = useState(false)
   const [completed, setCompleted] = useState(false)
@@ -21,13 +31,16 @@ const Cart = ({location}) => {
   }
 
   const handleRemoveFromCart = index => {
-    updateCart([...products.splice(index, 0)])
+    const newArray = [...products]
+    newArray.splice(index, 1)
+    updateCart(newArray)
   }
 
   const handlePlaceOrder = async formData => {
     setLoading(true)
     const order = {
       ...formData,
+      site: site.siteMetadata.siteName,
       products: products.map(
         ({id, name, quantity, price, currency, subTotal}) => ({
           id,

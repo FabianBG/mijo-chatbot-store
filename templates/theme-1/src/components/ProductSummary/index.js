@@ -10,7 +10,7 @@ export default ({id, name, price, mainImage, currency}) => (
     <Item style={{alignItems: 'center', display: 'block'}}>
       <Item.Content style={{marginBottom: '20px'}}>
         <Img
-          style={{heigth: '100%'}}
+          style={{heigth: '100%', maxHeigth: '500px'}}
           sizes={mainImage.childImageSharp.sizes}
           alt={name}
         />

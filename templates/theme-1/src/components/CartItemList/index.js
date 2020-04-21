@@ -53,13 +53,13 @@ export default ({products, removeFromCart, loading, completed}) => {
           </Item.Header>
         ),
         image: (
-          <React.Fragment>
+          <>
             <Responsive as={MobileItemImage} {...Responsive.onlyMobile} />
             <Responsive
               as={DesktopItemImage}
               minWidth={Responsive.onlyTablet.minWidth}
             />
-          </React.Fragment>
+          </>
         ),
         meta: `${quantity} x ${price}`,
         extra: (
