@@ -9,6 +9,15 @@ const domain = require("../domain");
 
 var router = express.Router();
 
+router.use(function(req, res, next) {
+  const url = `${process.env.APP_URL}${req.originalUrl}`;
+  const signature = req.header("X-Twilio-Signature");
+  if (twilio.validateRequest(signature, url, req.body)) {
+    return next();
+  }
+  return res.status(401).send({ auth: "invalid request" });
+});
+
 router.post("/store/create-site", async function(req, res) {
   const data = twilio.handleTwilioMessageRequest(req.body);
   const { id, phone } = data;
@@ -25,7 +34,7 @@ router.post("/store/create-site", async function(req, res) {
     } else {
       response = await domain.createSite(id, phone);
       twilio.sendMessage(
-        "The site is already created, add some products and send a message with *MIJO publish it* to publish it.",
+        "The site is created, add some products and send a message with *MIJO publish it* to publish it.",
         phone
       );
     }

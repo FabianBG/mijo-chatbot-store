@@ -1,6 +1,7 @@
 const accountSid = process.env.TWILIO_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
+const twilio = require("twilio");
+const client = twilio(accountSid, authToken);
 
 const sendMessage = (body, to, chanel = "whatsapp") => {
   client.messages
@@ -53,8 +54,13 @@ const handleTwilioMessageFieldRequest = (request, fields) => {
   };
 };
 
+const validateRequest = (twilioSignature, url, params) => {
+  return twilio.validateRequest(authToken, twilioSignature, url, params);
+};
+
 module.exports = {
   sendMessage,
+  validateRequest,
   handleTwilioMessageRequest,
   handleTwilioMessageFieldRequest,
 };
