@@ -1,0 +1,54 @@
+{
+  "actions": [
+    {
+      "say": "Great! I can help you to add a new product"
+    },
+    {
+      "collect": {
+        "name": "add_product_form",
+        "questions": [
+          {
+            "question": "What is your product name?",
+            "name": "name"
+          },
+          {
+            "question": "What is your product price?",
+            "name": "price",
+            "type": "Twilio.NUMBER"
+          },
+          {
+            "question": "Please take a picture of the product?",
+            "name": "image",
+            "type": "Twilio.MEDIA",
+            "validate": {
+              "on_failure": {
+                "messages": [
+                  {
+                    "say": "We do not accept this format. Please send image of the product"
+                  },
+                  {
+                    "say": "Lets try one more time to get the product picture."
+                  }
+                ],
+                "repeat_question": true
+              },
+              "allowed_types": {
+                "list": ["image/jpeg", "image/gif", "image/png", "image/bmp"]
+              },
+              "on_success": {
+                "say": "Great, we've got your all the information."
+              },
+              "max_attempts": {
+                "redirect": "task://greeting",
+                "num_attempts": 3
+              }
+            }
+          }
+        ],
+        "on_complete": {
+          "redirect": "[application_url]/mijo/twilio/store/add-product"
+        }
+      }
+    }
+  ]
+}

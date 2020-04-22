@@ -1,0 +1,10 @@
+{
+  "actions": [
+    {
+      "say": "Hello, what can I help you with today?"
+    },
+    {
+      "listen": true
+    }
+  ]
+}

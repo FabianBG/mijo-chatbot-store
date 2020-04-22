@@ -1,0 +1,10 @@
+{
+  "actions": [
+    {
+      "say": "Looks like I'm having trouble. Apologies for that. Let's start again, how can I help you today?"
+    },
+    {
+      "listen": true
+    }
+  ]
+}

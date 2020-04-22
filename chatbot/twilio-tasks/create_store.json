@@ -1,0 +1,18 @@
+{
+  "actions": [
+    {
+      "collect": {
+        "name": "collect_store_data",
+        "questions": [
+          {
+            "question": "Please let us know the name of your virtual store, and think something unique.",
+            "name": "id"
+          }
+        ],
+        "on_complete": {
+          "redirect": "[application_url]/mijo/twilio/store/create-site"
+        }
+      }
+    }
+  ]
+}

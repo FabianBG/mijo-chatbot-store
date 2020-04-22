@@ -1,0 +1,19 @@
+{
+  "actions": [
+    {
+      "collect": {
+        "name": "collect_depl",
+        "questions": [
+          {
+            "question": "Do you really like to update your site ?",
+            "name": "confirm",
+            "type": "Twilio.YES_NO"
+          }
+        ],
+        "on_complete": {
+          "redirect": "http://e2ab4428.ngrok.io/mijo/twilio/store/build-site"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "actions": [
+    {
+      "say": "Ok, Getting the yout product list"
+    },
+    {
+      "redirect": "[application_url]/mijo/twilio/store/list-delete-product"
+    },
+    {
+      "listen": {
+        "tasks": ["delete_product", "cancel_action"]
+      }
+    }
+  ]
+}

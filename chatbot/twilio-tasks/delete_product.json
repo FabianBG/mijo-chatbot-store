@@ -1,0 +1,7 @@
+{
+  "actions": [
+    {
+      "redirect": "[application_url]/mijo/twilio/store/delete-product"
+    }
+  ]
+}
