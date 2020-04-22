@@ -27,6 +27,8 @@ cp .env.example .env
 
 - You need a Twilio account and the keys to connect to the chatbot. [https://www.twilio.com/]
 
+- Use Ngrok to expose your app and integrate with Twilio
+
 Run the project:
 
 ```
@@ -39,7 +41,7 @@ npm start
 First of all create an accout and get the account SID and AUTH TOKEN, and put on the .env file, then follow the next steps:
 
 1. Configure Whatsapp Programable SMS sandbox [https://www.twilio.com/console/sms/whatsapp/learn].
-2. Create an Autopilot chatbot [https://www.twilio.com/console/autopilot/list], and add the tasks on the _chatbot/twilio-tasks_ folder.
+2. Create an Autopilot chatbot [https://www.twilio.com/console/autopilot/list], and add the tasks on the _chatbot/twilio-tasks_ folder, adn replace the url with your app url, use Ngrok for a local development.
 3. Bound the two services adding a Whatsapp channle on autopilot settings, whit this url provided configure Programable SMS Whatsapp _WHEN A MESSAGE COMES IN_ url.
 
 ## Project structure
