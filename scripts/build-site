@@ -1,0 +1,4 @@
+cd sites/$1
+rm -rf ./.cache
+npx gatsby build --prefix-paths
+cp -r public/* ../../public/`cat site-name`/
