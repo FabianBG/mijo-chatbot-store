@@ -36,6 +36,17 @@ Run the project:
 npm start
 ```
 
+## Docker start
+
+There is a docker image generated, so if you want to use the containerized version:
+
+```
+docker run -p3000:3000 -d --env-file [custom_file] https://hub.docker.com/repository/docker/fabianbg/mijo
+
+```
+
+- Create a env file with the vars on the .env.example for the docker container.
+
 ## Configure Twilio Autopilot and Programable SMS
 
 First of all create an accout and get the account SID and AUTH TOKEN, and put on the .env file, then follow the next steps:
@@ -49,6 +60,7 @@ First of all create an accout and get the account SID and AUTH TOKEN, and put on
 ```
 /
     app                             # Expose the app and twilio endpoints
+    images                          # Demostration of a sample images
     chatbot/twilio-tasks            # Contain the chatbot task configurations
     domain                          # Contains the domain logic of the app
     integration                     # Contains the twilio interation scripts
@@ -59,6 +71,32 @@ First of all create an accout and get the account SID and AUTH TOKEN, and put on
     server.js                       # Entry point of the app
     sites-config.js                 # Dynamic configuration file to define app url for the Gatsby sites
 ```
+
+## Screenshoots
+
+Main page:
+
+![MIJO site](https://github.com/FabianBG/mijo-chatbot-store/raw/develop/images/m1.png)
+
+Create an store:
+
+![create a store](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m2.png?raw=true)
+![MIJO site with a store](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m6.png?raw=true)
+
+Add a product and update the site:
+
+![add a product](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m3.png?raw=true)
+![update site](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m5.png?raw=true)
+
+Generated site:
+
+![store](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m7.png?raw=true)
+
+Place an order:
+
+![checkout](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m10.png?raw=true)
+![contact info](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m11.png?raw=true)
+![order message](https://github.com/FabianBG/mijo-chatbot-store/blob/develop/images/m13.png?raw=true)
 
 ## Licence
 
